@@ -265,6 +265,28 @@ function escapeHtml(text) {
 }
 
 // Funciones de persistencia con localStorage
+async function cargarDatosIniciales() {
+    try {
+        const response = await fetch('notas-iniciales.json');
+        const datosIniciales = await response.json();
+        
+        // Convertir los datos iniciales al formato de la aplicación
+        notas = datosIniciales.map((nota, index) => ({
+            id: Date.now() + index,
+            descripcion: nota.descripcion,
+            valor: nota.valor,
+            tipo: nota.tipo
+        }));
+        
+        // Guardar en localStorage
+        guardarDatos();
+        return true;
+    } catch (e) {
+        console.error('Error al cargar datos iniciales:', e);
+        return false;
+    }
+}
+
 function guardarDatos() {
     try {
         localStorage.setItem(STORAGE_KEY_NOTAS, JSON.stringify(notas));
@@ -280,7 +302,7 @@ function guardarDatos() {
 
 function cargarDatos() {
     try {
-        // Cargar notas
+        // Cargar notas desde localStorage
         const notasGuardadas = localStorage.getItem(STORAGE_KEY_NOTAS);
         if (notasGuardadas) {
             notas = JSON.parse(notasGuardadas);
@@ -289,6 +311,14 @@ function cargarDatos() {
                 ...nota,
                 id: parseInt(nota.id) || nota.id
             }));
+        } else {
+            // Si no hay datos guardados, cargar datos iniciales
+            console.log('No hay datos guardados, cargando datos iniciales...');
+            cargarDatosIniciales().then(() => {
+                renderizarNotas();
+                actualizarResultados();
+            });
+            return; // Salir temprano, se cargará después
         }
 
         // Cargar nota adicional
@@ -299,9 +329,11 @@ function cargarDatos() {
         }
     } catch (e) {
         console.error('Error al cargar datos:', e);
-        // Si hay un error, inicializamos con valores por defecto
-        notas = [];
-        notaAdicional = 0;
+        // Si hay un error, intentar cargar datos iniciales
+        cargarDatosIniciales().then(() => {
+            renderizarNotas();
+            actualizarResultados();
+        });
     }
 }
 

@@ -1,0 +1,133 @@
+[
+  {
+    "descripcion": "Programación de aplicaciones web (447) [OBLIGATORIA]",
+    "valor": 5.4,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Tecnología orientada a objetos (440) [OBLIGATORIA]",
+    "valor": 5.5,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Arquitectura de computadores (443) [OBLIGATORIA]",
+    "valor": 6.6,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Diseño tecnológico de sistemas de información (444) [OBLIGATORIA]",
+    "valor": 6.1,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Métodos formales en programación (830) [OBLIGATORIA]",
+    "valor": 5.0,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Procesadores de lenguajes (445) [OBLIGATORIA]",
+    "valor": 5.0,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Proyectos de informática (446) [OBLIGATORIA]",
+    "valor": 7.3,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Taller transversal I: programación y proceso de información (448) [OBLIGATORIA]",
+    "valor": 8.5,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Diseño de bases de datos (827) [OBLIGATORIA]",
+    "valor": 5.0,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Programación orientada a objetos (828) [OBLIGATORIA]",
+    "valor": 6.3,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Programación de bases de datos (832) [OBLIGATORIA]",
+    "valor": 7.3,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Ingeniería del Software (831) [OBLIGATORIA]",
+    "valor": 5.5,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Lógica (825) [OBLIGATORIA]",
+    "valor": 5.9,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Bases de datos (824) [OBLIGATORIA]",
+    "valor": 5.0,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Empresa (823) [BÁSICA]",
+    "valor": 5.0,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Sistemas informáticos (818) [BÁSICA]",
+    "valor": 5.0,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Redes de computadores (833) [OBLIGATORIA]",
+    "valor": 5.0,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Sistemas operativos (829) [OBLIGATORIA]",
+    "valor": 5.0,
+    "tipo": "OBLIGATORIA"
+  },
+  {
+    "descripcion": "Métodos algorítmicos en matemáticas (822) [BÁSICA]",
+    "valor": 5.0,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Tecnología de la programación (820) [BÁSICA]",
+    "valor": 5.5,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Estructura de computadores (819) [BÁSICA]",
+    "valor": 6.1,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Cálculo matricial y vectorial (815) [BÁSICA]",
+    "valor": 5.6,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Estadística (821) [BÁSICA]",
+    "valor": 5.8,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Cálculo infinitesimal (814) [BÁSICA]",
+    "valor": 6.4,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Física (816) [BÁSICA]",
+    "valor": 7.2,
+    "tipo": "BÁSICA"
+  },
+  {
+    "descripcion": "Metodología de la programación (817) [BÁSICA]",
+    "valor": 5.2,
+    "tipo": "BÁSICA"
+  }
+]
+
