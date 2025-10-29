@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Nota Final</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Calculadora de Nota Final</h1>
+            <p class="subtitle">Calcula tu nota media y nota final ponderada</p>
+        </header>
+
+        <main>
+            <!-- Sección para agregar notas -->
+            <section class="card">
+                <h2>Agregar Nueva Nota</h2>
+                <div class="input-group">
+                    <input type="number" id="notaInput" placeholder="Nota (0-10)" min="0" max="10" step="0.01">
+                    <input type="text" id="descripcionInput" placeholder="Descripción de la asignatura">
+                    <button id="agregarBtn" class="btn btn-primary">Agregar Nota</button>
+                </div>
+            </section>
+
+            <!-- Lista de notas -->
+            <section class="card">
+                <h2>Notas de Asignaturas</h2>
+                <div id="notasList" class="notas-list">
+                    <p class="empty-message">No hay notas agregadas. Agrega tu primera nota arriba.</p>
+                </div>
+            </section>
+
+            <!-- Nota adicional (30%) -->
+            <section class="card">
+                <h2>Nota Adicional (30%)</h2>
+                <div class="input-group">
+                    <input type="number" id="notaAdicionalInput" placeholder="Nota adicional (0-10)" min="0" max="10" step="0.01" value="0">
+                    <span class="input-label">Esta nota representa el 30% de la calificación final</span>
+                </div>
+            </section>
+
+            <!-- Resultados -->
+            <section class="card results-card">
+                <h2>Resultados</h2>
+                <div class="results">
+                    <div class="result-item">
+                        <span class="result-label">Nota Media:</span>
+                        <span class="result-value" id="notaMedia">0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Nota Media (70%):</span>
+                        <span class="result-value" id="notaMedia70">0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Nota Adicional (30%):</span>
+                        <span class="result-value" id="notaAdicional30">0.00</span>
+                    </div>
+                    <div class="result-item final">
+                        <span class="result-label">Nota Final:</span>
+                        <span class="result-value" id="notaFinal">0.00</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
