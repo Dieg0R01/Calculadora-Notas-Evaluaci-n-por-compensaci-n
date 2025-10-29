@@ -267,7 +267,16 @@ function escapeHtml(text) {
 // Funciones de persistencia con localStorage
 async function cargarDatosIniciales() {
     try {
-        const response = await fetch('notas-iniciales.json');
+        // Usar ruta absoluta desde la raíz para que funcione en GitHub Pages
+        const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+        const jsonPath = basePath ? `${basePath}/notas-iniciales.json` : './notas-iniciales.json';
+        
+        const response = await fetch(jsonPath);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const datosIniciales = await response.json();
         
         // Convertir los datos iniciales al formato de la aplicación
@@ -275,14 +284,34 @@ async function cargarDatosIniciales() {
             id: Date.now() + index,
             descripcion: nota.descripcion,
             valor: nota.valor,
-            tipo: nota.tipo
+            tipo: nota.tipo || 'OBLIGATORIA'
         }));
         
         // Guardar en localStorage
         guardarDatos();
+        console.log(`✅ Cargadas ${notas.length} notas iniciales`);
         return true;
     } catch (e) {
         console.error('Error al cargar datos iniciales:', e);
+        console.error('Intentando cargar desde ruta alternativa...');
+        // Intentar con ruta alternativa
+        try {
+            const responseAlt = await fetch('./notas-iniciales.json');
+            if (responseAlt.ok) {
+                const datosIniciales = await responseAlt.json();
+                notas = datosIniciales.map((nota, index) => ({
+                    id: Date.now() + index,
+                    descripcion: nota.descripcion,
+                    valor: nota.valor,
+                    tipo: nota.tipo || 'OBLIGATORIA'
+                }));
+                guardarDatos();
+                console.log(`✅ Cargadas ${notas.length} notas iniciales (ruta alternativa)`);
+                return true;
+            }
+        } catch (e2) {
+            console.error('Error en ruta alternativa:', e2);
+        }
         return false;
     }
 }
@@ -338,7 +367,17 @@ function cargarDatos() {
 }
 
 // Inicializar: cargar datos guardados y mostrar en pantalla
-cargarDatos();
-renderizarNotas();
-actualizarResultados();
+// Esperar a que el DOM esté completamente cargado
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarDatos();
+        renderizarNotas();
+        actualizarResultados();
+    });
+} else {
+    // DOM ya está listo
+    cargarDatos();
+    renderizarNotas();
+    actualizarResultados();
+}
 
