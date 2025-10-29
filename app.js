@@ -2,40 +2,63 @@
 let notas = [];
 let notaAdicional = 0;
 
+console.log('🚀 Script app.js cargado');
+
 // Clave para localStorage
 const STORAGE_KEY_NOTAS = 'calculadora_notas_datos';
 const STORAGE_KEY_NOTA_ADICIONAL = 'calculadora_notas_adicional';
 
-// Elementos del DOM
-const notaInput = document.getElementById('notaInput');
-const descripcionInput = document.getElementById('descripcionInput');
-const agregarBtn = document.getElementById('agregarBtn');
-const notasList = document.getElementById('notasList');
-const notaAdicionalInput = document.getElementById('notaAdicionalInput');
+// Variables para elementos del DOM (se inicializan después de que el DOM esté listo)
+let notaInput, descripcionInput, agregarBtn, notasList, notaAdicionalInput;
+let notaMediaEl, notaMedia70El, notaAdicional30El, notaFinalEl;
 
-// Elementos de resultados
-const notaMediaEl = document.getElementById('notaMedia');
-const notaMedia70El = document.getElementById('notaMedia70');
-const notaAdicional30El = document.getElementById('notaAdicional30');
-const notaFinalEl = document.getElementById('notaFinal');
+function inicializarElementos() {
+    notaInput = document.getElementById('notaInput');
+    descripcionInput = document.getElementById('descripcionInput');
+    agregarBtn = document.getElementById('agregarBtn');
+    notasList = document.getElementById('notasList');
+    notaAdicionalInput = document.getElementById('notaAdicionalInput');
 
-// Event listeners
-agregarBtn.addEventListener('click', agregarNota);
-notaInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        descripcionInput.focus();
+    // Elementos de resultados
+    notaMediaEl = document.getElementById('notaMedia');
+    notaMedia70El = document.getElementById('notaMedia70');
+    notaAdicional30El = document.getElementById('notaAdicional30');
+    notaFinalEl = document.getElementById('notaFinal');
+
+    console.log('✅ Elementos del DOM inicializados', {
+        notaInput: !!notaInput,
+        descripcionInput: !!descripcionInput,
+        agregarBtn: !!agregarBtn,
+        notasList: !!notasList,
+        notaAdicionalInput: !!notaAdicionalInput
+    });
+}
+
+function inicializarEventListeners() {
+    if (!agregarBtn || !notaInput || !descripcionInput || !notaAdicionalInput) {
+        console.error('❌ No se pudieron inicializar los event listeners - elementos faltantes');
+        return;
     }
-});
-descripcionInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        agregarNota();
-    }
-});
-notaAdicionalInput.addEventListener('input', () => {
-    notaAdicional = parseFloat(notaAdicionalInput.value) || 0;
-    guardarDatos();
-    actualizarResultados();
-});
+
+    agregarBtn.addEventListener('click', agregarNota);
+    notaInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            descripcionInput.focus();
+        }
+    });
+    descripcionInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            agregarNota();
+        }
+    });
+    notaAdicionalInput.addEventListener('input', () => {
+        notaAdicional = parseFloat(notaAdicionalInput.value) || 0;
+        guardarDatos();
+        actualizarResultados();
+    });
+
+    console.log('✅ Event listeners inicializados');
+}
 
 // Función para agregar una nueva nota
 function agregarNota() {
@@ -271,6 +294,10 @@ async function cargarDatosIniciales() {
         const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
         const jsonPath = basePath ? `${basePath}/notas-iniciales.json` : './notas-iniciales.json';
         
+        console.log('📥 Intentando cargar JSON desde:', jsonPath);
+        console.log('URL completa:', window.location.href);
+        console.log('Pathname:', window.location.pathname);
+        
         const response = await fetch(jsonPath);
         
         if (!response.ok) {
@@ -331,8 +358,11 @@ function guardarDatos() {
 
 function cargarDatos() {
     try {
+        console.log('📂 Verificando localStorage...');
         // Cargar notas desde localStorage
         const notasGuardadas = localStorage.getItem(STORAGE_KEY_NOTAS);
+        console.log('Datos en localStorage:', notasGuardadas ? 'Encontrados' : 'No encontrados');
+        
         if (notasGuardadas) {
             notas = JSON.parse(notasGuardadas);
             // Convertir IDs a números si son strings (por compatibilidad)
@@ -340,10 +370,16 @@ function cargarDatos() {
                 ...nota,
                 id: parseInt(nota.id) || nota.id
             }));
+            console.log(`✅ Cargadas ${notas.length} notas desde localStorage`);
         } else {
             // Si no hay datos guardados, cargar datos iniciales
-            console.log('No hay datos guardados, cargando datos iniciales...');
-            cargarDatosIniciales().then(() => {
+            console.log('⚠️ No hay datos guardados, cargando datos iniciales desde JSON...');
+            cargarDatosIniciales().then((exitoso) => {
+                if (exitoso) {
+                    console.log('✅ Datos iniciales cargados correctamente');
+                } else {
+                    console.warn('⚠️ No se pudieron cargar los datos iniciales');
+                }
                 renderizarNotas();
                 actualizarResultados();
             });
@@ -354,12 +390,19 @@ function cargarDatos() {
         const notaAdicionalGuardada = localStorage.getItem(STORAGE_KEY_NOTA_ADICIONAL);
         if (notaAdicionalGuardada !== null) {
             notaAdicional = parseFloat(notaAdicionalGuardada) || 0;
-            notaAdicionalInput.value = notaAdicional;
+            if (notaAdicionalInput) {
+                notaAdicionalInput.value = notaAdicional;
+            }
+            console.log(`✅ Nota adicional cargada: ${notaAdicional}`);
         }
     } catch (e) {
-        console.error('Error al cargar datos:', e);
+        console.error('❌ Error al cargar datos:', e);
         // Si hay un error, intentar cargar datos iniciales
-        cargarDatosIniciales().then(() => {
+        console.log('🔄 Intentando cargar datos iniciales como respaldo...');
+        cargarDatosIniciales().then((exitoso) => {
+            if (exitoso) {
+                console.log('✅ Datos iniciales cargados como respaldo');
+            }
             renderizarNotas();
             actualizarResultados();
         });
@@ -367,17 +410,38 @@ function cargarDatos() {
 }
 
 // Inicializar: cargar datos guardados y mostrar en pantalla
-// Esperar a que el DOM esté completamente cargado
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        cargarDatos();
-        renderizarNotas();
-        actualizarResultados();
-    });
-} else {
-    // DOM ya está listo
+function inicializarApp() {
+    console.log('🔧 Inicializando aplicación...');
+    console.log('Estado del DOM:', document.readyState);
+    
+    // Inicializar elementos del DOM
+    inicializarElementos();
+    
+    // Verificar que todos los elementos existen
+    if (!notaInput || !descripcionInput || !agregarBtn || !notasList || !notaAdicionalInput) {
+        console.error('❌ ERROR: Faltan elementos del DOM. Intentando de nuevo en 100ms...');
+        setTimeout(inicializarApp, 100);
+        return;
+    }
+    
+    // Inicializar event listeners
+    inicializarEventListeners();
+    
+    // Cargar datos y mostrar
+    console.log('📊 Cargando datos...');
     cargarDatos();
     renderizarNotas();
     actualizarResultados();
+    console.log('✅ Aplicación inicializada correctamente');
+}
+
+// Esperar a que el DOM esté completamente cargado
+if (document.readyState === 'loading') {
+    console.log('⏳ Esperando que el DOM esté listo...');
+    document.addEventListener('DOMContentLoaded', inicializarApp);
+} else {
+    // DOM ya está listo
+    console.log('✅ DOM ya está listo, inicializando...');
+    inicializarApp();
 }
 
