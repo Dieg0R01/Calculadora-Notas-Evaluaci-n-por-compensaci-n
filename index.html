@@ -66,6 +66,19 @@
         </main>
     </div>
 
+    <script>
+        // Script de verificación básica
+        console.log('🔍 Script inline ejecutado - consola funcionando');
+        console.log('Tiempo de carga:', new Date().toISOString());
+        
+        // Verificar si app.js se carga
+        window.addEventListener('load', () => {
+            console.log('📄 Página completamente cargada');
+            if (window.firebaseApp) {
+                console.warn('⚠️ Firebase detectado pero no debería estar aquí');
+            }
+        });
+    </script>
     <script src="app.js"></script>
 </body>
 </html>
